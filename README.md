@@ -215,6 +215,145 @@ PayEase is a comprehensive digital payments mobile application designed to addre
 
 ---
 
+## 🗺️ System Architecture & User Flow Diagrams (Mermaid)
+
+### 1. End-to-End Mobile App Launch & Payment Flowchart
+```mermaid
+flowchart TD
+    A([📱 Mobile OS Home Screen]) -->|Tap PayEase Icon or AI Push Alert| B[🔐 PayEase Splash & MFA Screen]
+    B -->|Biometric FaceID / Fingerprint + 4-Digit PIN| C{Auth & Device Fingerprint Valid?}
+    C -- No --> D[⚠️ Trigger OTP Fallback / Emergency Freeze]
+    C -- Yes --> E[🏠 Unified PayEase Home Dashboard]
+
+    E -->|Select Persona / Mode| F{User Journey Selection}
+
+    %% Consumer P2P & Split Flow
+    F -->|👨‍💻 Digital Native Deepak| G[💸 P2P Transfer & 4-Way Bill Split]
+    G --> H[Enter Amount & Note]
+    H --> I{Edge-Case & NPCI Guardrails}
+    I -- "Amount <= 0 or >2 Decimals" --> J[❌ Block & Show Inline Validation]
+    I -- "Amount > ₹1,00,000 (NPCI Cap)" --> J
+    I -- "Amount > Linked Bank Balance" --> J
+    I -- "Valid & Within Limits" --> K[🤖 AI Auto-Categorize Spend]
+
+    %% Regional & Utility Flow
+    F -->|👩‍👧 Family-First Priya| L[🇮🇳 Hindi UI + BBPS Utility Bills / QR Scan]
+    L --> M[🎙️ Voice-Assisted Hindi Confirmation]
+    M --> K
+
+    %% Merchant Hub Flow
+    F -->|🏪 Small Business Savita| N[📊 Merchant Hub Dashboard]
+    N --> O[🔊 Hindi Audio Box + T+0 Instant Settlement]
+    N --> P[🧾 1-Click WhatsApp GST Invoice & Working Capital Credit]
+
+    K --> Q[🔒 NPCI UPI 2.0 Core Settlement]
+    Q --> R([✅ Instant Receipt + Scratch Card Cashback + Live Balance Update])
+```
+
+### 2. Cloud Microservices & Payment Gateway Architecture
+```mermaid
+flowchart LR
+    subgraph Client_Layer["📱 Client Layer"]
+        RN[React Native App<br/>iOS & Android]
+        MApp[Merchant Portal<br/>& Audio Box]
+        Web[Web Dashboard<br/>React.js]
+    end
+
+    subgraph Edge_Security["🛡️ Edge & API Gateway"]
+        WAF[AWS WAF & TLS 1.3]
+        Kong[Kong API Gateway<br/>JWT Auth & Rate Limiting]
+    end
+
+    subgraph Microservices["⚙️ Node.js Core Microservices"]
+        UserSvc[User & eKYC Service]
+        PaySvc[UPI & Payment Router]
+        AISvc[AI Expense & Fraud ML Engine]
+        MerchSvc[Merchant & GST Service]
+        NotifSvc[Notification & Voice Service]
+    end
+
+    subgraph Data_Store["🗄️ Polyglot Persistence"]
+        PG[(PostgreSQL<br/>ACID Ledger & Txns)]
+        Mongo[(MongoDB<br/>User Profiles & Logs)]
+        Redis[(Redis Cluster<br/>Session & Idempotency)]
+    end
+
+    subgraph External_Rails["🏦 Banking & Regulatory Rails"]
+        NPCI[NPCI UPI 2.0 Switch]
+        BBPS[BBPS Utility Hub]
+        UIDAI[UIDAI Aadhaar eKYC]
+        Fallback[Razorpay / PayU Fallback]
+    end
+
+    RN & MApp & Web --> WAF --> Kong
+    Kong --> UserSvc & PaySvc & AISvc & MerchSvc
+
+    UserSvc --> UIDAI
+    UserSvc --> Mongo
+
+    PaySvc --> Redis
+    PaySvc --> PG
+    PaySvc --> AISvc
+    PaySvc --> NPCI & BBPS
+    PaySvc -.->|Auto-Failover| Fallback
+
+    MerchSvc --> PG & Mongo
+    PaySvc --> NotifSvc
+```
+
+### 3. Real-Time UPI 2.0 Transaction Sequence Diagram
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as 👤 User (PayEase App)
+    participant GW as 🛡️ Kong Gateway
+    participant Pay as ⚡ Payment Service
+    participant ML as 🤖 Fraud & AI Category ML
+    participant NPCI as 🏦 NPCI UPI Switch
+    participant Bank as 🏛️ Issuer / Payee Banks
+    participant DB as 🗄️ PostgreSQL Ledger
+
+    User->>GW: Initiate Payment (Amount, Payee UPI, Note, Biometric Token)
+    GW->>Pay: Validate JWT + Idempotency Key (Redis)
+    Pay->>ML: Score Device Fingerprint & Velocity (<50ms)
+    ML-->>Pay: Fraud Score: Low (99.9% Safe) + Tag: "🍔 Food & Dining"
+    Pay->>DB: Create PENDING Ledger Entry (ACID Transaction)
+    Pay->>NPCI: ReqPay API (Encrypted UPI 2.0 Payload)
+    NPCI->>Bank: Debit Payer HDFC A/c & Credit Payee A/c
+    Bank-->>NPCI: RespPay (Approved • RRN Generated)
+    NPCI-->>Pay: UPI Transaction Success (<380ms)
+    Pay->>DB: Commit COMPLETED Status + Update Balance
+    Pay-->>User: Render Verified Receipt + Cashback Reward + Update Spend Ring
+```
+
+### 4. 18-Month Product Roadmap (Gantt Chart)
+```mermaid
+gantt
+    title PayEase 18-Month Product Execution Roadmap (v1.0 to v2.0)
+    dateFormat  YYYY-MM-DD
+    axisFormat  %b %Y
+
+    section v1.0 MVP (P0)
+    eKYC, Bank Link & UPI Core (RICE 168.8)      :done,    mvp1, 2025-01-01, 45d
+    P2P Transfers, QR & BBPS Bills (RICE 237.5)  :done,    mvp2, 2025-02-15, 45d
+
+    section v1.1 Intelligence (P1)
+    AI Expense Categorization & Health Score     :active,  v11a, 2025-04-01, 45d
+    Hyperlocal Merchant Discovery & Hindi UI     :active,  v11b, 2025-05-15, 45d
+
+    section v1.2 Business Growth (P2)
+    Merchant Hub, T+0 Settlement & GST Invoices  :         v12a, 2025-07-01, 45d
+    Gold Loyalty Tiers, Cashback & Referrals     :         v12b, 2025-08-15, 45d
+
+    section v1.3 Scale & Premium
+    DB Sharding, 10K TPS & CIBIL Credit Score    :         v13,  2025-10-01, 90d
+
+    section v2.0 Financial Platform
+    SME Working Capital Loans, Wealth & Mutual Funds :     v20,  2026-01-01, 180d
+```
+
+---
+
 ## 📈 Growth Strategy & Monetization
 
 ### Revenue Streams
