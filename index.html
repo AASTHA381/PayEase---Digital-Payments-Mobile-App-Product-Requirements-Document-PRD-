@@ -1,0 +1,2642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PayEase — Interactive Mobile App Prototype & PRD Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070B14;
+      --bg-panel: #0E1526;
+      --bg-panel-hover: #151F38;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --primary: #4F46E5;
+      --primary-light: #6366F1;
+      --accent-teal: #10B981;
+      --accent-cyan: #06B6D4;
+      --accent-amber: #F59E0B;
+      --accent-rose: #F43F5E;
+      --text-white: #F8FAFC;
+      --text-muted: #94A3B8;
+      --phone-bg: #F4F6FB;
+      --phone-card: #FFFFFF;
+      --phone-text: #0F172A;
+      --phone-sub: #64748B;
+      --phone-border: #E2E8F0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 15% 15%, rgba(79, 70, 229, 0.16) 0%, transparent 45%),
+                  radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+                  var(--bg-dark);
+      color: var(--text-white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Top Header Bar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(7, 11, 20, 0.85);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+    }
+
+    .brand-title h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(79, 70, 229, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #A5B4FC;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-title p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .ctrl-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 7px 12px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ctrl-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(79, 70, 229, 0.35);
+    }
+
+    .ctrl-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Main Workspace Grid */
+    .workspace {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 28px 32px;
+      display: grid;
+      grid-template-columns: 340px 420px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) {
+      .workspace {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+    }
+
+    /* Left Column: PRD Context & Personas */
+    .side-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 20px;
+      width: 100%;
+    }
+
+    .panel-heading {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #818CF8;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .persona-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .persona-card {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .persona-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .persona-card.active {
+      background: rgba(79, 70, 229, 0.14);
+      border-color: #6366F1;
+      box-shadow: 0 4px 16px rgba(79, 70, 229, 0.2);
+    }
+
+    .persona-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .persona-info h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 2px;
+      color: var(--text-white);
+    }
+
+    .persona-info p {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .persona-tag {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+    }
+
+    .screen-Jump-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .jump-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 10px 11px;
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .jump-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .jump-btn.active {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.28), rgba(6, 182, 212, 0.2));
+      border-color: #6366F1;
+      color: #fff;
+    }
+
+    .prd-metrics-mini {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .metric-box {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-subtle);
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .metric-box .val {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .metric-box .lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Center Column: iPhone 16 Pro Mockup */
+    .phone-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .iphone-frame {
+      width: 390px;
+      height: 812px;
+      background: var(--phone-bg);
+      border-radius: 52px;
+      border: 11px solid #1E293B;
+      box-shadow:
+        0 0 0 2px #334155,
+        0 30px 70px rgba(0, 0, 0, 0.65),
+        0 0 90px rgba(79, 70, 229, 0.22);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      color: var(--phone-text);
+      transition: background 0.3s;
+    }
+
+    .iphone-frame.dark-theme {
+      --phone-bg: #0B1120;
+      --phone-card: #151F32;
+      --phone-text: #F8FAFC;
+      --phone-sub: #94A3B8;
+      --phone-border: #1E293B;
+    }
+
+    /* Dynamic Island & Status Bar */
+    .status-bar {
+      height: 46px;
+      padding: 12px 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--phone-text);
+      position: relative;
+      z-index: 30;
+      flex-shrink: 0;
+    }
+
+    .dynamic-island {
+      width: 112px;
+      height: 26px;
+      background: #000;
+      border-radius: 20px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+
+    .island-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 6px #10B981;
+    }
+
+    /* Screen Container */
+    .screen-viewport {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: 84px;
+      scrollbar-width: none;
+    }
+    .screen-viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .app-screen {
+      display: none;
+      animation: fadeIn 0.24s ease;
+    }
+
+    .app-screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Phone App Header */
+    .app-header {
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .user-greeting {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4F46E5, #06B6D4);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .greeting-text .sub {
+      font-size: 11px;
+      color: var(--phone-sub);
+      font-weight: 500;
+    }
+
+    .greeting-text .name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--phone-text);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 9px;
+      border-radius: 99px;
+      background: rgba(79, 70, 229, 0.1);
+      color: #4F46E5;
+      border: 1px solid rgba(79, 70, 229, 0.25);
+      cursor: pointer;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--phone-card);
+      border: 1px solid var(--phone-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      font-size: 15px;
+    }
+
+    .notif-dot {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #F43F5E;
+    }
+
+    /* Hero Wallet Card */
+    .hero-card {
+      margin: 6px 18px 16px;
+      padding: 18px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #312E81 0%, #4F46E5 55%, #0891B2 100%);
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(79, 70, 229, 0.32);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      right: -30px;
+      top: -30px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .upi-chip-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .upi-id-tag {
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.16);
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+
+    .security-shield {
+      font-size: 10.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(52, 211, 153, 0.5);
+      color: #A7F3D0;
+      padding: 3px 8px;
+      border-radius: 99px;
+      font-weight: 700;
+    }
+
+    .balance-label {
+      font-size: 11.5px;
+      opacity: 0.85;
+    }
+
+    .balance-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin: 4px 0 14px;
+    }
+
+    .balance-amount {
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .bank-pill {
+      font-size: 11px;
+      opacity: 0.9;
+      background: rgba(0, 0, 0, 0.22);
+      padding: 4px 9px;
+      border-radius: 8px;
+    }
+
+    .quick-pay-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .qp-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .qp-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .qp-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      backdrop-filter: blur(5px);
+    }
+
+    .qp-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* AI Nudge Banner */
+    .ai-banner {
+      margin: 0 18px 16px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, rgba(79, 70, 229, 0.12), rgba(6, 182, 212, 0.12));
+      border: 1px solid rgba(79, 70, 229, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      cursor: pointer;
+    }
+
+    .ai-sparkle {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #4F46E5;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .ai-banner-text h5 {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--phone-text);
+    }
+
+    .ai-banner-text p {
+      font-size: 11px;
+      color: var(--phone-sub);
+      margin-top: 1px;
+    }
+
+    /* Section Card inside Phone */
+    .phone-section {
+      margin: 0 18px 16px;
+      background: var(--phone-card);
+      border: 1px solid var(--phone-border);
+      border-radius: 20px;
+      padding: 15px;
+    }
+
+    .sec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .sec-head h4 {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--phone-text);
+    }
+
+    .sec-head span {
+      font-size: 11px;
+      font-weight: 700;
+      color: #4F46E5;
+      cursor: pointer;
+    }
+
+    .bills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .bill-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 4px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .bill-item:hover {
+      background: rgba(79, 70, 229, 0.07);
+    }
+
+    .bill-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    .bill-item span {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--phone-text);
+      text-align: center;
+    }
+
+    /* People Row */
+    .people-row {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .person-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      min-width: 52px;
+    }
+
+    .person-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .person-chip span {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--phone-text);
+    }
+
+    /* Transaction List */
+    .txn-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .txn-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--phone-border);
+    }
+
+    .txn-row:last-child {
+      border-bottom: none;
+    }
+
+    .txn-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .txn-ico {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .txn-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--phone-text);
+    }
+
+    .txn-meta {
+      font-size: 10.5px;
+      color: var(--phone-sub);
+    }
+
+    .txn-amt {
+      font-size: 13px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .txn-amt.debit { color: var(--phone-text); }
+    .txn-amt.credit { color: #10B981; }
+
+    /* Bottom Navigation Bar inside Phone */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 74px;
+      background: var(--phone-card);
+      border-top: 1px solid var(--phone-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 8px 10px;
+      z-index: 25;
+    }
+
+    .nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--phone-sub);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 6px 10px;
+    }
+
+    .nav-tab.active {
+      color: #4F46E5;
+    }
+
+    .nav-tab .ico {
+      font-size: 18px;
+    }
+
+    .nav-qr-fab {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #4F46E5, #06B6D4);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-top: -22px;
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.45);
+      cursor: pointer;
+      border: 3px solid var(--phone-card);
+    }
+
+    /* Send Money Screen */
+    .send-box {
+      padding: 14px 18px;
+    }
+
+    .recipient-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--phone-card);
+      border: 1px solid var(--phone-border);
+      padding: 12px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    .amount-input-card {
+      background: var(--phone-card);
+      border: 1px solid var(--phone-border);
+      border-radius: 20px;
+      padding: 20px 16px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .currency-input-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin: 8px 0 12px;
+    }
+
+    .currency-sym {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--phone-sub);
+    }
+
+    .amt-input {
+      font-size: 36px;
+      font-weight: 800;
+      width: 170px;
+      border: none;
+      background: transparent;
+      color: var(--phone-text);
+      text-align: center;
+      outline: none;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .preset-chips {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .preset-chip {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 99px;
+      background: rgba(79, 70, 229, 0.1);
+      color: #4F46E5;
+      border: none;
+      cursor: pointer;
+    }
+
+    .note-input {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--phone-border);
+      background: var(--phone-bg);
+      color: var(--phone-text);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .primary-cta {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      border: none;
+      background: linear-gradient(135deg, #4F46E5, #06B6D4);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
+      margin-top: 10px;
+    }
+
+    /* Expense Analytics Screen */
+    .donut-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 10px 0;
+    }
+
+    .donut-ring {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #4F46E5 0deg 130deg,
+        #06B6D4 130deg 220deg,
+        #10B981 220deg 295deg,
+        #F59E0B 295deg 360deg
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .donut-hole {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      background: var(--phone-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cat-bar {
+      margin-bottom: 10px;
+    }
+
+    .cat-bar-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .progress-track {
+      height: 7px;
+      background: var(--phone-border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+
+    /* Right Column: Live PRD Inspector & Interactive Specs */
+    .inspector-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .spec-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 22px;
+    }
+
+    .spec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .spec-header h3 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .rice-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .rice-table th {
+      text-align: left;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .rice-table td {
+      padding: 9px 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .p0-tag {
+      background: rgba(244, 63, 94, 0.2);
+      color: #FDA4AF;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-weight: 700;
+      font-size: 10.5px;
+    }
+
+    .p1-tag {
+      background: rgba(245, 158, 11, 0.2);
+      color: #FCD34D;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-weight: 700;
+      font-size: 10.5px;
+    }
+
+    .p2-tag {
+      background: rgba(6, 182, 212, 0.2);
+      color: #67E8F9;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-weight: 700;
+      font-size: 10.5px;
+    }
+
+    .arch-flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .arch-node {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      padding: 10px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .arch-node .title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .arch-node .tech {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* Receipt Modal overlay inside phone */
+    .phone-modal {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
+
+    .phone-modal.open {
+      display: flex;
+    }
+
+    .receipt-sheet {
+      background: var(--phone-card);
+      color: var(--phone-text);
+      width: 100%;
+      border-radius: 24px;
+      padding: 22px 18px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 0.2s ease;
+    }
+
+    .success-check {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #10B981;
+      color: #fff;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Full Interactive Phone OS / Launch Overlays */
+    .phone-os-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 58px 22px 26px;
+      color: #fff;
+      animation: fadeIn 0.28s ease;
+    }
+
+    .phone-os-layer.active {
+      display: flex;
+    }
+
+    /* 1. iOS Wallpaper Home Screen (Tap PayEase Icon to Open) */
+    .ios-wallpaper {
+      background: radial-gradient(circle at 30% 20%, #4338CA 0%, #1E1B4B 48%, #090D16 100%);
+    }
+
+    .ios-clock-widget {
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .ios-clock-widget .time {
+      font-size: 52px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .ios-clock-widget .date {
+      font-size: 13px;
+      color: #CBD5E1;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .ios-notif-card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 18px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .ios-notif-card:hover {
+      transform: scale(1.02);
+    }
+
+    .ios-app-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px 12px;
+      margin: 10px 0 auto;
+      padding-top: 22px;
+    }
+
+    .ios-app-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+    }
+
+    .ios-app-icon .tile {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .ios-app-icon:hover .tile {
+      transform: scale(1.1);
+    }
+
+    .ios-app-icon span {
+      font-size: 11px;
+      font-weight: 600;
+      color: #F1F5F9;
+      text-align: center;
+    }
+
+    .payease-launcher .tile {
+      background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+      font-weight: 800;
+      color: #fff;
+      border: 2px solid #A5B4FC;
+      animation: pulseGlow 1.8s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7), 0 10px 24px rgba(79, 70, 229, 0.6); }
+      50% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0), 0 10px 24px rgba(79, 70, 229, 0.6); }
+    }
+
+    .tap-hint-badge {
+      background: #10B981;
+      color: #052E16;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 8px 14px;
+      border-radius: 99px;
+      text-align: center;
+      margin: 0 auto 12px;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+      cursor: pointer;
+      animation: bounceHint 1.4s infinite;
+    }
+
+    @keyframes bounceHint {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .ios-dock {
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(16px);
+      border-radius: 26px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    /* 2. App Splash & Biometric Unlock Screen */
+    .splash-layer {
+      background: linear-gradient(160deg, #1E1B4B 0%, #312E81 50%, #0F172A 100%);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 18px;
+    }
+
+    .splash-logo-big {
+      width: 88px;
+      height: 88px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 16px 40px rgba(79, 70, 229, 0.55);
+      margin: 0 auto;
+    }
+
+    .biometric-box {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 22px;
+      padding: 20px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .pin-dots {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .pin-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: 2px solid #A5B4FC;
+      background: transparent;
+      transition: all 0.2s;
+    }
+
+    .pin-dot.filled {
+      background: #10B981;
+      border-color: #10B981;
+      transform: scale(1.15);
+    }
+
+    .faceid-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+      margin-top: 6px;
+    }
+
+    /* Journey Stepper Bar above Phone */
+    .journey-stepper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 10px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .step-pill {
+      padding: 5px 11px;
+      border-radius: 99px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .step-pill.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Home Indicator Bar at bottom of iPhone */
+    .ios-home-bar {
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 124px;
+      height: 4px;
+      border-radius: 99px;
+      background: rgba(148, 163, 184, 0.55);
+      z-index: 60;
+      cursor: pointer;
+    }
+
+    /* In-Phone Validation & Toast Banner */
+    .phone-toast {
+      position: absolute;
+      top: 52px;
+      left: 16px;
+      right: 16px;
+      background: #0F172A;
+      color: #F8FAFC;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-left: 4px solid #10B981;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      z-index: 70;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .phone-toast.error {
+      border-left-color: #F43F5E;
+      background: #450A0A;
+      color: #FECDD3;
+    }
+
+    .phone-toast.show {
+      display: flex;
+    }
+
+    .error-banner {
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      color: #F43F5E;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: none;
+      text-align: center;
+    }
+
+    .error-banner.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="top-bar">
+    <div class="brand-row">
+      <div class="brand-logo">₹</div>
+      <div class="brand-title">
+        <h1>PayEase Interactive Prototype <span class="badge-pill">PRD v1.0 Live</span></h1>
+        <p>Product Manager: Aastha Saini • Target Market: Indian Digital Payments ($500B+ TAM)</p>
+      </div>
+    </div>
+
+    <div class="top-controls">
+      <!-- Language Switcher (PRD Regional Inclusivity) -->
+      <div class="control-group" title="Multi-language Tier 2/3 Support">
+        <button class="ctrl-btn active" onclick="setLanguage('en')" id="lang-en">🇬🇧 English</button>
+        <button class="ctrl-btn" onclick="setLanguage('hi')" id="lang-hi">🇮🇳 हिंदी (Hindi)</button>
+      </div>
+
+      <!-- Theme Switcher -->
+      <div class="control-group">
+        <button class="ctrl-btn active" onclick="togglePhoneTheme(false)" id="theme-light">☀️ Light</button>
+        <button class="ctrl-btn" onclick="togglePhoneTheme(true)" id="theme-dark">🌙 Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main 3-Column Interactive Showcase -->
+  <main class="workspace">
+
+    <!-- LEFT COLUMN: PRD Personas & Screen Switcher -->
+    <aside class="side-panel">
+      <div class="panel-heading">
+        <span>1. Switch PRD User Persona</span>
+        <span>3 Segments</span>
+      </div>
+      <div class="persona-cards">
+        <div class="persona-card active" onclick="selectPersona('deepak')" id="p-deepak">
+          <div class="persona-avatar" style="background: rgba(79, 70, 229, 0.2);">👨‍💻</div>
+          <div class="persona-info">
+            <h4>Digital Native Deepak (28)</h4>
+            <p>Metro (Bangalore) • ₹12 LPA • Wants 1-tap P2P, bill splits & AI expense insights.</p>
+            <span class="persona-tag">Primary • 40% User Base</span>
+          </div>
+        </div>
+
+        <div class="persona-card" onclick="selectPersona('savita')" id="p-savita">
+          <div class="persona-avatar" style="background: rgba(16, 185, 129, 0.2);">🏪</div>
+          <div class="persona-info">
+            <h4>Small Business Savita (36)</h4>
+            <p>Tier-2 (Jaipur) • Retail Owner • Wants instant QR settlement, voice alerts & analytics.</p>
+            <span class="persona-tag">Merchant • 25% User Base</span>
+          </div>
+        </div>
+
+        <div class="persona-card" onclick="selectPersona('priya')" id="p-priya">
+          <div class="persona-avatar" style="background: rgba(245, 158, 11, 0.2);">👩‍👧</div>
+          <div class="persona-info">
+            <h4>Family-First Priya (34)</h4>
+            <p>Tier-2/3 (Indore) • Homemaker • Wants Hindi UI, utility bill reminders & fraud shield.</p>
+            <span class="persona-tag">Regional • 35% User Base</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-heading">
+        <span>2. Interactive App Screens</span>
+        <span>Click to Preview</span>
+      </div>
+      <div class="screen-Jump-list">
+        <button class="jump-btn active" onclick="showPhoneDesktop()" id="btn-launcher">📱 1. Phone Screen</button>
+        <button class="jump-btn" onclick="launchPayEaseApp()" id="btn-splash">🔐 2. Biometric Open</button>
+        <button class="jump-btn" onclick="unlockAndLandHome()" id="btn-home">🏠 3. Home & UPI</button>
+        <button class="jump-btn" onclick="unlockAndSwitch('send')" id="btn-send">💸 4. P2P Transfer</button>
+        <button class="jump-btn" onclick="unlockAndSwitch('scan')" id="btn-scan">📷 5. QR Scanner</button>
+        <button class="jump-btn" onclick="unlockAndSwitch('insights')" id="btn-insights">✨ 6. AI Insights</button>
+        <button class="jump-btn" onclick="unlockAndSwitch('merchants')" id="btn-merchants">📍 7. Nearby Stores</button>
+        <button class="jump-btn" onclick="unlockAndSwitch('business')" id="btn-business">📊 8. Merchant Hub</button>
+      </div>
+
+      <div class="panel-heading">
+        <span>3. PRD Target KPIs (Month 18)</span>
+      </div>
+      <div class="prd-metrics-mini">
+        <div class="metric-box">
+          <div class="val">5.0M</div>
+          <div class="lbl">Target MAU (50% D30)</div>
+        </div>
+        <div class="metric-box">
+          <div class="val">$500M</div>
+          <div class="lbl">Monthly TPV (North Star)</div>
+        </div>
+        <div class="metric-box">
+          <div class="val">99.5%</div>
+          <div class="lbl">Payment Success Rate</div>
+        </div>
+        <div class="metric-box">
+          <div class="val">16:1</div>
+          <div class="lbl">LTV:CAC Unit Ratio</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER COLUMN: Interactive Mobile Device -->
+    <section class="phone-stage">
+      <!-- Interactive Flow Stepper -->
+      <div class="journey-stepper">
+        <span class="step-pill active" id="step-1" onclick="showPhoneDesktop()">1. Tap App Icon</span>
+        <span>→</span>
+        <span class="step-pill" id="step-2" onclick="launchPayEaseApp()">2. Biometric Unlock</span>
+        <span>→</span>
+        <span class="step-pill" id="step-3" onclick="unlockAndLandHome()">3. Home Dashboard</span>
+        <span>→</span>
+        <span class="step-pill" id="step-4" onclick="unlockAndSwitch('send')">4. Pay & Receipt</span>
+      </div>
+
+      <div class="iphone-frame" id="iphone-frame">
+        <!-- iOS Status Bar -->
+        <div class="status-bar" id="phone-status-bar" style="color:#fff;">
+          <span>9:41</span>
+          <div class="dynamic-island">
+            <span style="font-size: 9px; color:#fff; font-weight:700;">🔒 NPCI</span>
+            <div class="island-dot"></div>
+          </div>
+          <span>5G • 100%</span>
+        </div>
+
+        <!-- LAYER A: iOS Phone Home Screen (User clicks PayEase icon to launch) -->
+        <div class="phone-os-layer ios-wallpaper active" id="os-desktop-layer">
+          <div class="ios-clock-widget">
+            <div class="time">09:41</div>
+            <div class="date">Tuesday, 27 October</div>
+          </div>
+
+          <div class="ios-notif-card" onclick="launchPayEaseApp()" title="Tap notification to open PayEase">
+            <div class="brand-logo" style="width:36px; height:36px; font-size:17px; flex-shrink:0;">₹</div>
+            <div>
+              <div style="font-size:12px; font-weight:800;">PayEase AI Reminder • Now</div>
+              <div style="font-size:11px; color:#E2E8F0;">⚡ BESCOM bill (₹1,420) due in 2 days. Tap to launch & pay in 1-click.</div>
+            </div>
+          </div>
+
+          <div class="ios-app-grid">
+            <!-- THE PAYEASE APP ICON -->
+            <div class="ios-app-icon payease-launcher" onclick="launchPayEaseApp()">
+              <div class="tile">₹</div>
+              <span>PayEase</span>
+            </div>
+
+            <div class="ios-app-icon" onclick="launchPayEaseApp()">
+              <div class="tile" style="background:#1E293B;">💬</div>
+              <span>Messages</span>
+            </div>
+
+            <div class="ios-app-icon" onclick="launchPayEaseApp()">
+              <div class="tile" style="background:#0F766E;">📷</div>
+              <span>Camera</span>
+            </div>
+
+            <div class="ios-app-icon" onclick="launchPayEaseApp()">
+              <div class="tile" style="background:#334155;">⚙️</div>
+              <span>Settings</span>
+            </div>
+          </div>
+
+          <div class="tap-hint-badge" onclick="launchPayEaseApp()">
+            👆 Tap the glowing <strong>PayEase (₹)</strong> app icon to launch!
+          </div>
+
+          <div class="ios-dock">
+            <div class="ios-app-icon" onclick="launchPayEaseApp()">
+              <div class="tile" style="width:48px; height:48px; background:#22C55E; font-size:22px;">📞</div>
+            </div>
+            <div class="ios-app-icon payease-launcher" onclick="launchPayEaseApp()">
+              <div class="tile" style="width:48px; height:48px; font-size:22px;">₹</div>
+            </div>
+            <div class="ios-app-icon" onclick="launchPayEaseApp()">
+              <div class="tile" style="width:48px; height:48px; background:#3B82F6; font-size:22px;">🧭</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAYER B: PayEase Splash & Biometric KYC / PIN Auth Screen -->
+        <div class="phone-os-layer splash-layer" id="os-splash-layer">
+          <div>
+            <div class="splash-logo-big">₹</div>
+            <h2 style="font-size:24px; font-weight:800; margin-top:14px;">PayEase</h2>
+            <p style="font-size:12px; color:#A5B4FC; margin-top:4px;">Unified • Intelligent • NPCI UPI 2.0 Verified</p>
+          </div>
+
+          <div class="biometric-box">
+            <div style="font-size:28px; margin-bottom:4px;">🪪</div>
+            <div style="font-size:13px; font-weight:800;" id="splash-welcome-user">Welcome back, Deepak Sharma</div>
+            <div style="font-size:11px; color:#CBD5E1; margin-top:2px;">Multi-Factor Biometric + 4-Digit Security PIN</div>
+
+            <div class="pin-dots">
+              <div class="pin-dot filled"></div>
+              <div class="pin-dot filled"></div>
+              <div class="pin-dot filled"></div>
+              <div class="pin-dot" id="pin-dot-4"></div>
+            </div>
+
+            <button class="faceid-btn" onclick="unlockAndLandHome()">
+              🔓 Unlock with Face ID / Fingerprint →
+            </button>
+          </div>
+
+          <div style="font-size:10.5px; color:#94A3B8;">
+            🛡️ Bank-Grade AES-256 Encryption • 99.9% Fraud Detection
+          </div>
+        </div>
+
+        <!-- iOS Bottom Home Bar (Click anytime to exit back to Phone Screen) -->
+        <div class="ios-home-bar" onclick="showPhoneDesktop()" title="Click to minimize app to Phone Home Screen"></div>
+
+        <!-- In-Phone Toast Notification (Replaces blocking browser alerts) -->
+        <div class="phone-toast" id="phone-toast" role="status" aria-live="polite">
+          <span id="phone-toast-msg">Notification</span>
+          <span style="cursor:pointer; opacity:0.75;" onclick="hidePhoneToast()">✕</span>
+        </div>
+
+        <!-- Top App Bar -->
+        <div class="app-header">
+          <div class="user-greeting">
+            <div class="avatar-circle" id="phone-avatar">D</div>
+            <div class="greeting-text">
+              <div class="sub" id="ui-greeting-sub">Namaste, Verified KYC ✓</div>
+              <div class="name" id="ui-user-name">Deepak Sharma</div>
+            </div>
+          </div>
+          <div class="header-actions">
+            <span class="lang-pill" onclick="toggleLangQuick()" id="phone-lang-pill">EN / हिं</span>
+            <div class="icon-btn" onclick="switchScreen('business')" title="Switch to Merchant Mode">🏪<span class="notif-dot"></span></div>
+          </div>
+        </div>
+
+        <!-- SCREEN VIEWPORT -->
+        <div class="screen-viewport">
+
+          <!-- SCREEN 1: HOME DASHBOARD -->
+          <div class="app-screen active" id="screen-home">
+            <div class="hero-card">
+              <div class="upi-chip-row">
+                <span class="upi-id-tag" id="ui-upi-id">UPI: deepak@payease</span>
+                <span class="security-shield">🛡️ Fraud Shield ON</span>
+              </div>
+              <div class="balance-label" id="ui-bal-label">Total Linked Bank Balance</div>
+              <div class="balance-row">
+                <div class="balance-amount" id="ui-balance">₹48,920.00</div>
+                <span class="bank-pill">HDFC •• 4821</span>
+              </div>
+
+              <div class="quick-pay-grid">
+                <div class="qp-item" onclick="switchScreen('scan')">
+                  <div class="qp-icon">📷</div>
+                  <span class="qp-label" id="ui-qp-scan">Scan QR</span>
+                </div>
+                <div class="qp-item" onclick="switchScreen('send')">
+                  <div class="qp-icon">💸</div>
+                  <span class="qp-label" id="ui-qp-send">Send Money</span>
+                </div>
+                <div class="qp-item" onclick="switchScreen('insights')">
+                  <div class="qp-icon">📊</div>
+                  <span class="qp-label" id="ui-qp-ai">AI Budget</span>
+                </div>
+                <div class="qp-item" onclick="switchScreen('merchants')">
+                  <div class="qp-icon">🎁</div>
+                  <span class="qp-label" id="ui-qp-rewards">Cashback</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Smart Nudge (Key Differentiator in PRD) -->
+            <div class="ai-banner" onclick="switchScreen('insights')">
+              <div class="ai-sparkle">✨</div>
+              <div class="ai-banner-text">
+                <h5 id="ui-ai-title">PayEase AI Financial Assistant</h5>
+                <p id="ui-ai-desc">Electricity bill (₹1,420) due in 2 days. Dining spend is 14% below budget!</p>
+              </div>
+            </div>
+
+            <!-- Quick People Transfer -->
+            <div class="phone-section">
+              <div class="sec-head">
+                <h4 id="ui-sec-people">Quick Send & Split Bill</h4>
+                <span onclick="switchScreen('send')">Split Bill →</span>
+              </div>
+              <div class="people-row">
+                <div class="person-chip" onclick="openSendTo('Aarav Mehta', 'aarav@payease')">
+                  <div class="person-avatar" style="background:#4F46E5;">AM</div>
+                  <span>Aarav</span>
+                </div>
+                <div class="person-chip" onclick="openSendTo('Priya Verma', 'priya@okaxis')">
+                  <div class="person-avatar" style="background:#10B981;">PV</div>
+                  <span>Priya</span>
+                </div>
+                <div class="person-chip" onclick="openSendTo('Savita General Store', 'savitastore@payease')">
+                  <div class="person-avatar" style="background:#F59E0B;">SG</div>
+                  <span>Savita Store</span>
+                </div>
+                <div class="person-chip" onclick="openSendTo('Rohan Kulkarni', 'rohan@ybl')">
+                  <div class="person-avatar" style="background:#EC4899;">RK</div>
+                  <span>Rohan</span>
+                </div>
+                <div class="person-chip" onclick="openSendTo('Maa (Home)', 'maa@payease')">
+                  <div class="person-avatar" style="background:#06B6D4;">M</div>
+                  <span>Maa ❤️</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- BBPS Bill Payments (P0 Feature) -->
+            <div class="phone-section">
+              <div class="sec-head">
+                <h4 id="ui-sec-bills">Recharge & Utility Bills (BBPS)</h4>
+                <span onclick="showPhoneToast('✅ BBPS Smart Auto-Pay enabled for Electricity & DTH')">Auto-Pay</span>
+              </div>
+              <div class="bills-grid">
+                <div class="bill-item" onclick="openSendTo('BESCOM Electricity', 'bescom.bbps@payease', 1420)">
+                  <div class="bill-icon" style="background:rgba(245,158,11,0.14); color:#F59E0B;">⚡</div>
+                  <span id="ui-bill-elec">Electricity</span>
+                </div>
+                <div class="bill-item" onclick="openSendTo('Jio 5G Recharge', 'jio.prep@payease', 299)">
+                  <div class="bill-icon" style="background:rgba(79,70,229,0.14); color:#4F46E5;">📱</div>
+                  <span id="ui-bill-mob">Mobile</span>
+                </div>
+                <div class="bill-item" onclick="openSendTo('Indane Gas Cylinder', 'indane.bbps@payease', 850)">
+                  <div class="bill-icon" style="background:rgba(244,63,94,0.14); color:#F43F5E;">🔥</div>
+                  <span id="ui-bill-gas">LPG Gas</span>
+                </div>
+                <div class="bill-item" onclick="openSendTo('Tata Play DTH', 'tataplay@payease', 450)">
+                  <div class="bill-icon" style="background:rgba(6,182,212,0.14); color:#06B6D4;">📺</div>
+                  <span id="ui-bill-dth">DTH / TV</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent AI Categorized Transactions -->
+            <div class="phone-section">
+              <div class="sec-head">
+                <h4 id="ui-sec-txns">Recent Activity (Auto-Categorized)</h4>
+                <span onclick="switchScreen('insights')">Analytics</span>
+              </div>
+              <div class="txn-list" id="home-txn-list">
+                <div class="txn-row">
+                  <div class="txn-left">
+                    <div class="txn-ico" style="background:rgba(16,185,129,0.14);">🛒</div>
+                    <div>
+                      <div class="txn-title">Savita Kirana & Supermart</div>
+                      <div class="txn-meta">Today, 6:15 PM • 🏷️ Groceries</div>
+                    </div>
+                  </div>
+                  <div class="txn-amt debit">-₹640</div>
+                </div>
+                <div class="txn-row">
+                  <div class="txn-left">
+                    <div class="txn-ico" style="background:rgba(79,70,229,0.14);">🍕</div>
+                    <div>
+                      <div class="txn-title">Dinner Split (4 Friends)</div>
+                      <div class="txn-meta">Yesterday • 🏷️ Food & Dining</div>
+                    </div>
+                  </div>
+                  <div class="txn-amt credit">+₹1,200</div>
+                </div>
+                <div class="txn-row">
+                  <div class="txn-left">
+                    <div class="txn-ico" style="background:rgba(245,158,11,0.14);">⚡</div>
+                    <div>
+                      <div class="txn-title">PayEase Cashback Reward</div>
+                      <div class="txn-meta">24 Oct • 🏷️ Loyalty Points</div>
+                    </div>
+                  </div>
+                  <div class="txn-amt credit">+₹75</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCREEN 2: P2P MONEY TRANSFER & BILL SPLIT -->
+          <div class="app-screen" id="screen-send">
+            <div class="send-box">
+              <div class="sec-head" style="margin-bottom:10px;">
+                <h4>Instant UPI P2P Transfer</h4>
+                <span onclick="switchScreen('home')">← Back</span>
+              </div>
+
+              <div class="recipient-banner">
+                <div class="person-avatar" style="background:#4F46E5;" id="send-avatar">AM</div>
+                <div>
+                  <div style="font-size:13.5px; font-weight:800;" id="send-name">Aarav Mehta</div>
+                  <div style="font-size:11px; color:var(--phone-sub);" id="send-upi">aarav@payease • Verified Name ✓</div>
+                </div>
+              </div>
+
+              <div class="amount-input-card">
+                <div style="font-size:11px; color:var(--phone-sub); font-weight:600;">ENTER AMOUNT (ZERO FEE)</div>
+                <div class="currency-input-wrap">
+                  <span class="currency-sym">₹</span>
+                  <input type="number" class="amt-input" id="pay-amount-input" value="850" min="1" max="100000" />
+                </div>
+
+                <div class="preset-chips">
+                  <button class="preset-chip" onclick="setAmount(250)">+₹250</button>
+                  <button class="preset-chip" onclick="setAmount(500)">+₹500</button>
+                  <button class="preset-chip" onclick="setAmount(1200)">+₹1,200</button>
+                  <button class="preset-chip" onclick="setAmount(2000)">+₹2,000</button>
+                </div>
+
+                <input type="text" class="note-input" id="pay-note-input" value="🍕 Friday Dinner Bill Split" placeholder="Add a note (AI auto-tags category)..." />
+              </div>
+
+              <div class="phone-section" style="margin:0 0 12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px;">
+                  <span>🤖 <strong>AI Auto-Category:</strong></span>
+                  <span id="ai-detected-category" style="background:rgba(79,70,229,0.12); color:#4F46E5; padding:3px 9px; border-radius:99px; font-weight:700;">🍔 Food & Dining</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; margin-top:8px; color:var(--phone-sub);">
+                  <span id="split-preview-label">👥 Split equally with 3 friends (You + 3)?</span>
+                  <input type="checkbox" id="split-toggle" onchange="updateSplitPreview()" style="accent-color:#4F46E5;" />
+                </div>
+              </div>
+
+              <div class="error-banner" id="pay-error-banner"></div>
+
+              <button class="primary-cta" id="pay-submit-btn" onclick="executePayment()">🔒 Authenticate with Biometric & Pay</button>
+              <div style="text-align:center; font-size:10.5px; color:var(--phone-sub); margin-top:8px;">
+                Protected by PayEase AES-256 & 99.9% ML Fraud Shield
+              </div>
+            </div>
+          </div>
+
+          <!-- SCREEN 3: QR CODE SCANNER -->
+          <div class="app-screen" id="screen-scan">
+            <div class="send-box" style="text-align:center;">
+              <div class="sec-head">
+                <h4>Universal BharatQR / UPI Scan</h4>
+                <span onclick="switchScreen('home')">← Close</span>
+              </div>
+
+              <div style="height:260px; border-radius:24px; background:#0F172A; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; margin:12px 0; border:2px dashed #38BDF8; overflow:hidden;">
+                <div style="width:160px; height:160px; border:3px solid #10B981; border-radius:20px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(16,185,129,0.08);">
+                  <div style="font-size:44px;">🏪</div>
+                  <div style="font-size:11px; font-weight:700; color:#34D399; margin-top:6px;">Savita Kirana Store</div>
+                  <div style="font-size:10px; color:#94A3B8;">savitastore@payease</div>
+                </div>
+                <div style="font-size:11px; margin-top:12px; color:#38BDF8;">⚡ Dynamic Merchant QR Detected</div>
+              </div>
+
+              <button class="primary-cta" onclick="openSendTo('Savita Kirana Store', 'savitastore@payease', 480)">Pay ₹480 to Savita Kirana Store</button>
+
+              <div class="phone-section" style="margin:14px 0 0; text-align:left;">
+                <div style="font-size:12px; font-weight:800; margin-bottom:4px;">🎙️ Voice-Assisted Hindi Confirmation</div>
+                <p style="font-size:11px; color:var(--phone-sub);">"Savita Kirana Store ko ₹480 bhejein" — Designed for Tier 2/3 confidence.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCREEN 4: AI EXPENSE TRACKING & INSIGHTS (P1 Differentiator) -->
+          <div class="app-screen" id="screen-insights">
+            <div class="phone-section" style="margin-top:8px;">
+              <div class="sec-head">
+                <h4>✨ AI Monthly Spend Analysis</h4>
+                <span>Oct 2025</span>
+              </div>
+              <div class="donut-wrap">
+                <div class="donut-ring">
+                  <div class="donut-hole">
+                    <span style="font-size:10px; color:var(--phone-sub);">Spent</span>
+                    <strong style="font-size:13px;">₹18.4K</strong>
+                  </div>
+                </div>
+                <div style="flex:1;">
+                  <div style="font-size:12px; font-weight:800; margin-bottom:4px;">Financial Health Score: <span style="color:#10B981;">84/100</span></div>
+                  <p style="font-size:11px; color:var(--phone-sub); line-height:1.4;">You saved <strong>₹3,200 more</strong> than September! AI suggests moving ₹2,000 idle balance to Smart Goal.</p>
+                </div>
+              </div>
+
+              <div style="margin-top:14px;">
+                <div class="cat-bar">
+                  <div class="cat-bar-top"><span>🍔 Food & Dining (36%)</span><span>₹6,620 / ₹8,000</span></div>
+                  <div class="progress-track"><div class="progress-fill" style="width:78%; background:#4F46E5;"></div></div>
+                </div>
+                <div class="cat-bar">
+                  <div class="cat-bar-top"><span>🛒 Groceries & Local Stores (25%)</span><span>₹4,600 / ₹5,000</span></div>
+                  <div class="progress-track"><div class="progress-fill" style="width:88%; background:#06B6D4;"></div></div>
+                </div>
+                <div class="cat-bar">
+                  <div class="cat-bar-top"><span>⚡ Bills & Utilities (21%)</span><span>₹3,860 / ₹4,000</span></div>
+                  <div class="progress-track"><div class="progress-fill" style="width:94%; background:#10B981;"></div></div>
+                </div>
+                <div class="cat-bar">
+                  <div class="cat-bar-top"><span>🛍️ Shopping & Others (18%)</span><span>₹3,320 / ₹5,000</span></div>
+                  <div class="progress-track"><div class="progress-fill" style="width:65%; background:#F59E0B;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="phone-section">
+              <div class="sec-head">
+                <h4>🎯 Predictive Bill Reminders</h4>
+                <span>82% User Demand</span>
+              </div>
+              <div class="txn-row">
+                <div class="txn-left">
+                  <div class="txn-ico" style="background:rgba(244,63,94,0.12);">⚡</div>
+                  <div>
+                    <div class="txn-title">BESCOM Electricity Bill</div>
+                    <div class="txn-meta">Due in 2 Days • Avoid ₹50 late fee</div>
+                  </div>
+                </div>
+                <button class="preset-chip" onclick="openSendTo('BESCOM Electricity', 'bescom.bbps@payease', 1420)">Pay ₹1,420</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCREEN 5: MERCHANT DISCOVERY & REWARDS -->
+          <div class="app-screen" id="screen-merchants">
+            <div class="phone-section" style="margin-top:8px;">
+              <div class="sec-head">
+                <h4>📍 Verified Nearby Merchants</h4>
+                <span>Jaipur & Bangalore</span>
+              </div>
+              <div class="txn-list">
+                <div class="txn-row">
+                  <div class="txn-left">
+                    <div class="txn-ico" style="background:rgba(16,185,129,0.15);">🏪</div>
+                    <div>
+                      <div class="txn-title">Savita Kirana & Provision</div>
+                      <div class="txn-meta">⭐ 4.9 (140) • 200m away • 5% Cashback</div>
+                    </div>
+                  </div>
+                  <button class="preset-chip" onclick="openSendTo('Savita Kirana Store', 'savitastore@payease', 350)">Pay</button>
+                </div>
+                <div class="txn-row">
+                  <div class="txn-left">
+                    <div class="txn-ico" style="background:rgba(245,158,11,0.15);">☕</div>
+                    <div>
+                      <div class="txn-title">Chai Point & Bakery</div>
+                      <div class="txn-meta">⭐ 4.7 (310) • 450m away • Flat ₹25 Off</div>
+                    </div>
+                  </div>
+                  <button class="preset-chip" onclick="openSendTo('Chai Point', 'chaipoint@payease', 180)">Pay</button>
+                </div>
+                <div class="txn-row">
+                  <div class="txn-left">
+                    <div class="txn-ico" style="background:rgba(79,70,229,0.15);">💊</div>
+                    <div>
+                      <div class="txn-title">Apollo MedPlus Pharmacy</div>
+                      <div class="txn-meta">⭐ 4.8 (95) • 600m away • Instant UPI</div>
+                    </div>
+                  </div>
+                  <button class="preset-chip" onclick="openSendTo('Apollo Pharmacy', 'apollo@payease', 520)">Pay</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="phone-section">
+              <div class="sec-head">
+                <h4>🏆 PayEase Gold Loyalty</h4>
+                <span>1,420 Pts</span>
+              </div>
+              <p style="font-size:11.5px; color:var(--phone-sub);">You have earned <strong>₹485 cashback</strong> this quarter. Refer a friend to earn ₹100 instant UPI reward (40:1 LTV:CAC channel).</p>
+            </div>
+          </div>
+
+          <!-- SCREEN 6: SMALL BUSINESS SAVITA — MERCHANT HUB -->
+          <div class="app-screen" id="screen-business">
+            <div class="hero-card" style="background:linear-gradient(135deg, #065F46 0%, #059669 60%, #0D9488 100%);">
+              <div class="upi-chip-row">
+                <span class="upi-id-tag">🏪 Savita Kirana Store</span>
+                <span class="security-shield">🔊 Hindi Voice Box ON</span>
+              </div>
+              <div class="balance-label">Today's Instant Settlement Collection (28 Txns)</div>
+              <div class="balance-row">
+                <div class="balance-amount">₹14,850.00</div>
+                <span class="bank-pill">0% MDR Fee</span>
+              </div>
+              <div style="font-size:11px; opacity:0.9;">✅ Next Bank Settlement: Instant (T+0) to SBI •• 9912</div>
+            </div>
+
+            <div class="phone-section">
+              <div class="sec-head">
+                <h4>📈 Weekly Store Analytics</h4>
+                <span>+22% vs Last Wk</span>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                <div style="padding:10px; border-radius:12px; background:var(--phone-bg);">
+                  <div style="font-size:10.5px; color:var(--phone-sub);">Repeat Customers</div>
+                  <div style="font-size:16px; font-weight:800; color:#10B981;">74%</div>
+                </div>
+                <div style="padding:10px; border-radius:12px; background:var(--phone-bg);">
+                  <div style="font-size:10.5px; color:var(--phone-sub);">Pre-Approved Loan</div>
+                  <div style="font-size:16px; font-weight:800; color:#4F46E5;">₹1,50,000</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="phone-section">
+              <div class="sec-head">
+                <h4>⚡ Quick Merchant Actions</h4>
+                <span>5-Min Setup</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="preset-chip" style="flex:1; padding:10px;" onclick="switchScreen('scan')">🖨️ Show Store QR</button>
+                <button class="preset-chip" style="flex:1; padding:10px;" onclick="generateGstInvoice()">🧾 Create GST Invoice</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+          <button class="nav-tab active" onclick="switchScreen('home')" id="nav-home">
+            <span class="ico">🏠</span>
+            <span>Home</span>
+          </button>
+          <button class="nav-tab" onclick="switchScreen('insights')" id="nav-insights">
+            <span class="ico">✨</span>
+            <span>AI Spend</span>
+          </button>
+          <div class="nav-qr-fab" onclick="switchScreen('scan')" title="Scan Any QR">📷</div>
+          <button class="nav-tab" onclick="switchScreen('merchants')" id="nav-merchants">
+            <span class="ico">📍</span>
+            <span>Nearby</span>
+          </button>
+          <button class="nav-tab" onclick="switchScreen('business')" id="nav-business">
+            <span class="ico">🏪</span>
+            <span>Business</span>
+          </button>
+        </nav>
+
+        <!-- Payment Confirmation Modal inside Phone -->
+        <div class="phone-modal" id="payment-modal">
+          <div class="receipt-sheet">
+            <div class="success-check">✓</div>
+            <div style="font-size:12px; color:#10B981; font-weight:800;">NPCI UPI VERIFIED • 0.38s</div>
+            <div style="font-size:26px; font-weight:800; margin:6px 0;" id="receipt-amt">₹850.00</div>
+            <div style="font-size:13px; font-weight:700;" id="receipt-to">Paid to Aarav Mehta</div>
+            <div style="font-size:11px; color:var(--phone-sub); margin:4px 0 14px;" id="receipt-ref">Ref: TXN94820184 • Auto-tagged: 🍔 Food</div>
+            <div style="background:rgba(16,185,129,0.12); color:#10B981; padding:8px; border-radius:10px; font-size:11.5px; font-weight:700; margin-bottom:14px;">
+              🎉 You won ₹15 Instant Scratch Card Cashback!
+            </div>
+            <button class="primary-cta" onclick="closeReceipt()">Done</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: PRD Architecture, RICE Prioritization & Competitive Matrix -->
+    <section class="inspector-col">
+
+      <!-- Dynamic Screen PRD Context Card -->
+      <div class="spec-card">
+        <div class="spec-header">
+          <h3 id="inspector-title">📋 PRD Feature Alignment: Unified Home & UPI (P0)</h3>
+          <span class="badge-pill" id="inspector-rice">RICE Score: 237.5</span>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.55; margin-bottom:14px;" id="inspector-desc">
+          Addresses the #1 user pain point from your primary research (<strong>68% of 847 survey respondents</strong> find juggling multiple payment apps confusing, and <strong>74% worry about fraud</strong>). Combines 1-tap UPI, BBPS utility bills, and AI nudges in one uncluttered view.
+        </p>
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;">
+          <div class="arch-node">
+            <div class="title">Latency SLA</div>
+            <div class="tech">&lt;500ms p95 API</div>
+          </div>
+          <div class="arch-node">
+            <div class="title">Encryption</div>
+            <div class="tech">AES-256 + TLS 1.3</div>
+          </div>
+          <div class="arch-node">
+            <div class="title">Pain Solved</div>
+            <div class="tech">82% Want Insights</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRD RICE Feature Prioritization Matrix -->
+      <div class="spec-card">
+        <div class="spec-header">
+          <h3>🎯 RICE Prioritization & MoSCoW Roadmap</h3>
+          <span style="font-size:11px; color:var(--text-muted);">Click any row to preview in phone</span>
+        </div>
+        <table class="rice-table">
+          <thead>
+            <tr>
+              <th>Feature Module</th>
+              <th>Reach</th>
+              <th>Impact</th>
+              <th>RICE</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="cursor:pointer;" onclick="unlockAndSwitch('send')">
+              <td><strong>💸 P2P Money Transfers</strong></td>
+              <td>5.0M</td>
+              <td>3x</td>
+              <td><strong>237.5</strong></td>
+              <td><span class="p0-tag">P0 • MVP</span></td>
+            </tr>
+            <tr style="cursor:pointer;" onclick="unlockAndSwitch('scan')">
+              <td><strong>📷 QR Code Payments</strong></td>
+              <td>4.0M</td>
+              <td>3x</td>
+              <td><strong>216.0</strong></td>
+              <td><span class="p0-tag">P0 • MVP</span></td>
+            </tr>
+            <tr style="cursor:pointer;" onclick="unlockAndLandHome()">
+              <td><strong>🏦 UPI & BBPS Bills</strong></td>
+              <td>5.0M</td>
+              <td>3x</td>
+              <td><strong>168.8</strong></td>
+              <td><span class="p0-tag">P0 • MVP</span></td>
+            </tr>
+            <tr style="cursor:pointer;" onclick="unlockAndSwitch('insights')">
+              <td><strong>✨ AI Expense Tracking</strong></td>
+              <td>2.0M</td>
+              <td>3x</td>
+              <td><strong>85.0</strong></td>
+              <td><span class="p1-tag">P1 • v1.1</span></td>
+            </tr>
+            <tr style="cursor:pointer;" onclick="unlockAndSwitch('merchants')">
+              <td><strong>📍 Merchant Discovery</strong></td>
+              <td>1.5M</td>
+              <td>2x</td>
+              <td><strong>60.0</strong></td>
+              <td><span class="p1-tag">P1 • v1.1</span></td>
+            </tr>
+            <tr style="cursor:pointer;" onclick="unlockAndSwitch('business')">
+              <td><strong>🏪 Business Dashboard</strong></td>
+              <td>500K</td>
+              <td>3x</td>
+              <td><strong>33.8</strong></td>
+              <td><span class="p2-tag">P2 • v1.2</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Technical Architecture & Competitive Moat -->
+      <div class="spec-card">
+        <div class="spec-header">
+          <h3>🛠️ System Architecture & Competitive Moat</h3>
+          <span style="font-size:11px; color:#34D399;">99.9% Uptime • 10K TPS</span>
+        </div>
+        <div class="arch-flow">
+          <div class="arch-node">
+            <div class="title">React Native</div>
+            <div class="tech">iOS / Android App</div>
+          </div>
+          <div class="arch-node">
+            <div class="title">Kong Gateway</div>
+            <div class="tech">JWT + Rate Limit</div>
+          </div>
+          <div class="arch-node">
+            <div class="title">Node.js Services</div>
+            <div class="tech">UPI / BBPS / AI ML</div>
+          </div>
+          <div class="arch-node">
+            <div class="title">Polyglot DB</div>
+            <div class="tech">Postgres + Mongo</div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; font-size:11.5px; color:var(--text-muted);">
+          <span>✅ <strong>vs PhonePe (47%):</strong> Cleaner UX + AI Budget</span>
+          <span>✅ <strong>vs GPay (34%):</strong> Full BBPS + Merchant Hub</span>
+          <span>✅ <strong>vs Paytm (13%):</strong> Transparent Security</span>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    let currentLang = 'en';
+    let currentBalance = 48920;
+    let splashTimer1 = null;
+    let splashTimer2 = null;
+    let toastTimer = null;
+    let paymentInFlight = false;
+
+    function clearAllSplashTimers() {
+      if (splashTimer1) { clearTimeout(splashTimer1); splashTimer1 = null; }
+      if (splashTimer2) { clearTimeout(splashTimer2); splashTimer2 = null; }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function showPhoneToast(msg, isError = false) {
+      if (toastTimer) clearTimeout(toastTimer);
+      const toast = document.getElementById('phone-toast');
+      const text = document.getElementById('phone-toast-msg');
+      if (!toast || !text) return;
+      text.textContent = msg;
+      toast.classList.toggle('error', Boolean(isError));
+      toast.classList.add('show');
+      toastTimer = setTimeout(hidePhoneToast, 3400);
+    }
+
+    function hidePhoneToast() {
+      const toast = document.getElementById('phone-toast');
+      if (toast) toast.classList.remove('show');
+    }
+
+    function clearPayError() {
+      const err = document.getElementById('pay-error-banner');
+      if (err) {
+        err.textContent = '';
+        err.classList.remove('show');
+      }
+    }
+
+    function showPayError(msg) {
+      const err = document.getElementById('pay-error-banner');
+      if (err) {
+        err.textContent = msg;
+        err.classList.add('show');
+      }
+      showPhoneToast(msg, true);
+    }
+
+    function detectAiCategory(text) {
+      const t = (text || '').toLowerCase();
+      if (/bescom|electric|jio|mobile|gas|indane|dth|tataplay|bill|recharge/.test(t)) return '⚡ Bills & Utilities';
+      if (/kirana|savita|mart|grocery|milk|store|provision/.test(t)) return '🛒 Groceries';
+      if (/apollo|med|pharma|hospital|doctor/.test(t)) return '💊 Healthcare';
+      if (/dinner|food|chai|pizza|lunch|cafe|bakery|split/.test(t)) return '🍔 Food & Dining';
+      return '🏷️ General Transfer';
+    }
+
+    function updateSplitPreview() {
+      const chk = document.getElementById('split-toggle');
+      const lbl = document.getElementById('split-preview-label');
+      const rawAmt = parseFloat(document.getElementById('pay-amount-input').value);
+      if (!lbl) return;
+      if (chk && chk.checked && Number.isFinite(rawAmt) && rawAmt > 0) {
+        const share = Math.round((rawAmt / 4) * 100) / 100;
+        lbl.textContent = `👥 Split 4 ways: ₹${share.toLocaleString('en-IN')} each (3 requests sent)`;
+      } else {
+        lbl.textContent = '👥 Split equally with 3 friends (You + 3)?';
+      }
+    }
+
+    function generateGstInvoice() {
+      const invId = 'INV-' + Math.floor(100 + Math.random() * 900);
+      showPhoneToast(`🧾 GST Invoice #${invId} generated & shared on WhatsApp!`);
+    }
+
+    function updateJourneyStepper(stepNum) {
+      [1, 2, 3, 4].forEach(n => {
+        const el = document.getElementById('step-' + n);
+        if (el) el.classList.toggle('active', n === stepNum);
+      });
+    }
+
+    function showPhoneDesktop() {
+      clearAllSplashTimers();
+      closeReceiptOnly();
+      hidePhoneToast();
+      document.getElementById('os-desktop-layer').classList.add('active');
+      document.getElementById('os-splash-layer').classList.remove('active');
+      document.getElementById('phone-status-bar').style.color = '#fff';
+      updateJourneyStepper(1);
+
+      document.querySelectorAll('.jump-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById('btn-launcher');
+      if (btn) btn.classList.add('active');
+
+      document.getElementById('inspector-title').textContent = '📱 Step 1: Mobile OS Entry & Push Notification Engagement';
+      document.getElementById('inspector-rice').textContent = 'PRD Section 8 • GTM Retention';
+      document.getElementById('inspector-desc').textContent = 'Click the glowing PayEase (₹) app icon or the AI bill-due push notification on the phone wallpaper to launch the app — simulating the real first-time & daily user trigger.';
+    }
+
+    function launchPayEaseApp() {
+      clearAllSplashTimers();
+      closeReceiptOnly();
+      document.getElementById('os-desktop-layer').classList.remove('active');
+      document.getElementById('os-splash-layer').classList.add('active');
+      document.getElementById('phone-status-bar').style.color = '#fff';
+      document.getElementById('pin-dot-4').classList.remove('filled');
+      updateJourneyStepper(2);
+
+      document.querySelectorAll('.jump-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById('btn-splash');
+      if (btn) btn.classList.add('active');
+
+      document.getElementById('inspector-title').textContent = '🔐 Step 2: Biometric & Security PIN Authentication (P0)';
+      document.getElementById('inspector-rice').textContent = '74% Security Pain Solved';
+      document.getElementById('inspector-desc').textContent = 'PRD Section 4 & 5: Multi-factor authentication (Biometric + 4-digit PIN + JWT session) reassures the 74% of users worried about digital payment fraud before landing on the Home dashboard.';
+
+      // Track BOTH timers independently so rapid clicks never leak orphaned timers
+      splashTimer1 = setTimeout(() => {
+        const dot4 = document.getElementById('pin-dot-4');
+        if (dot4) dot4.classList.add('filled');
+      }, 550);
+
+      splashTimer2 = setTimeout(() => {
+        if (document.getElementById('os-splash-layer').classList.contains('active')) {
+          unlockAndLandHome();
+        }
+      }, 1450);
+    }
+
+    function unlockAndLandHome() {
+      clearAllSplashTimers();
+      document.getElementById('os-desktop-layer').classList.remove('active');
+      document.getElementById('os-splash-layer').classList.remove('active');
+      document.getElementById('phone-status-bar').style.color = '';
+      updateJourneyStepper(3);
+      switchScreen('home');
+    }
+
+    function unlockAndSwitch(screenId) {
+      clearAllSplashTimers();
+      document.getElementById('os-desktop-layer').classList.remove('active');
+      document.getElementById('os-splash-layer').classList.remove('active');
+      document.getElementById('phone-status-bar').style.color = '';
+      updateJourneyStepper(screenId === 'send' ? 4 : 3);
+      switchScreen(screenId);
+    }
+
+    const screenSpecs = {
+      home: {
+        title: '📋 PRD Feature Alignment: Unified Home, UPI & BBPS (P0)',
+        rice: 'RICE Score: 168.75',
+        desc: 'Addresses the #1 user pain point from primary research (68% find multiple payment apps confusing). Combines multi-bank UPI balance check, 1-tap QR/P2P actions, AI spending nudges, and Bharat Bill Payment System (BBPS) utilities.'
+      },
+      send: {
+        title: '💸 PRD Feature Alignment: P2P Money Transfers & Split Bill (P0)',
+        rice: 'RICE Score: 237.50 (#1 Priority)',
+        desc: 'Designed for Digital Native Deepak: <30s average transaction time, 99.5% target success rate, automatic ML expense tagging, and group bill-splitting.'
+      },
+      scan: {
+        title: '📷 PRD Feature Alignment: Universal Dynamic QR & Voice Confirm (P0)',
+        rice: 'RICE Score: 216.00',
+        desc: 'Supports static & dynamic BharatQR/UPI codes with regional voice confirmation to build trust for Tier 2/3 users (Family-First Priya) and instant settlement for merchants.'
+      },
+      insights: {
+        title: '✨ PRD Differentiator: AI-Powered Expense Tracking & Budgeting (P1)',
+        rice: 'RICE Score: 85.00',
+        desc: '82% of surveyed users wanted better spending insights — where PhonePe, GPay, and Paytm fall short. Features auto-categorization, Financial Health Score, and predictive bill alerts.'
+      },
+      merchants: {
+        title: '📍 PRD Differentiator: Hyperlocal Merchant Discovery & Cashback (P1)',
+        rice: 'RICE Score: 60.00',
+        desc: 'Solves the 61% user pain point of finding nearby digital-ready stores in Tier 2/3 cities, paired with Silver/Gold/Platinum loyalty rewards (89% user preference).'
+      },
+      business: {
+        title: '🏪 PRD Differentiator: Small Business Savita Merchant Dashboard (P2)',
+        rice: 'RICE Score: 33.75',
+        desc: '5-minute simplified onboarding, T+0 instant bank settlement, Hindi audio payment announcements, GST invoice generator, and pre-approved working capital credit.'
+      }
+    };
+
+    function switchScreen(screenId) {
+      clearAllSplashTimers();
+      closeReceiptOnly();
+      clearPayError();
+      // Always ensure OS desktop & splash overlays are dismissed when navigating to an app screen
+      document.getElementById('os-desktop-layer').classList.remove('active');
+      document.getElementById('os-splash-layer').classList.remove('active');
+      document.getElementById('phone-status-bar').style.color = '';
+      updateJourneyStepper(screenId === 'send' ? 4 : 3);
+
+      document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById('screen-' + screenId);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.jump-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById('btn-' + screenId);
+      if (btn) btn.classList.add('active');
+
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      const nav = document.getElementById('nav-' + screenId);
+      if (nav) nav.classList.add('active');
+
+      const viewport = document.querySelector('.screen-viewport');
+      if (viewport) viewport.scrollTop = 0;
+
+      if (screenSpecs[screenId]) {
+        document.getElementById('inspector-title').textContent = screenSpecs[screenId].title;
+        document.getElementById('inspector-rice').textContent = screenSpecs[screenId].rice;
+        document.getElementById('inspector-desc').textContent = screenSpecs[screenId].desc;
+      }
+    }
+
+    function selectPersona(persona) {
+      document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('active'));
+      document.getElementById('p-' + persona).classList.add('active');
+
+      if (persona === 'deepak') {
+        document.getElementById('phone-avatar').textContent = 'D';
+        document.getElementById('ui-user-name').textContent = 'Deepak Sharma';
+        document.getElementById('splash-welcome-user').textContent = 'Welcome back, Deepak Sharma';
+        document.getElementById('ui-upi-id').textContent = 'UPI: deepak@payease';
+        setLanguage('en');
+        unlockAndLandHome();
+      } else if (persona === 'savita') {
+        document.getElementById('phone-avatar').textContent = 'S';
+        document.getElementById('ui-user-name').textContent = 'Savita Devi (Merchant)';
+        document.getElementById('splash-welcome-user').textContent = 'Welcome back, Savita Kirana Store';
+        document.getElementById('ui-upi-id').textContent = 'UPI: savitastore@payease';
+        unlockAndSwitch('business');
+      } else if (persona === 'priya') {
+        document.getElementById('phone-avatar').textContent = 'P';
+        document.getElementById('ui-user-name').textContent = 'Priya Joshi';
+        document.getElementById('splash-welcome-user').textContent = 'नमस्ते, Priya Joshi';
+        document.getElementById('ui-upi-id').textContent = 'UPI: priya@payease';
+        setLanguage('hi');
+        unlockAndLandHome();
+      }
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('lang-hi').classList.toggle('active', lang === 'hi');
+
+      if (lang === 'hi') {
+        document.getElementById('ui-greeting-sub').textContent = 'नमस्ते, केवाईसी सत्यापित ✓';
+        document.getElementById('ui-bal-label').textContent = 'कुल बैंक बैलेंस (सुरक्षित)';
+        document.getElementById('ui-qp-scan').textContent = 'QR स्कैन';
+        document.getElementById('ui-qp-send').textContent = 'पैसे भेजें';
+        document.getElementById('ui-qp-ai').textContent = 'AI बजट';
+        document.getElementById('ui-qp-rewards').textContent = 'कैशबैक';
+        document.getElementById('ui-ai-title').textContent = 'PayEase AI वित्तीय सहायक';
+        document.getElementById('ui-ai-desc').textContent = 'बिजली बिल (₹1,420) 2 दिन में देय है। आपका खर्च बजट के अंदर है!';
+        document.getElementById('ui-sec-people').textContent = 'तुरंत पैसे भेजें (परिवार और दोस्त)';
+        document.getElementById('ui-sec-bills').textContent = 'रिचार्ज और बिल भुगतान (BBPS)';
+        document.getElementById('ui-bill-elec').textContent = 'बिजली';
+        document.getElementById('ui-bill-mob').textContent = 'मोबाइल';
+        document.getElementById('ui-bill-gas').textContent = 'गैस सिलेंडर';
+        document.getElementById('ui-bill-dth').textContent = 'डीटीएच';
+      } else {
+        document.getElementById('ui-greeting-sub').textContent = 'Namaste, Verified KYC ✓';
+        document.getElementById('ui-bal-label').textContent = 'Total Linked Bank Balance';
+        document.getElementById('ui-qp-scan').textContent = 'Scan QR';
+        document.getElementById('ui-qp-send').textContent = 'Send Money';
+        document.getElementById('ui-qp-ai').textContent = 'AI Budget';
+        document.getElementById('ui-qp-rewards').textContent = 'Cashback';
+        document.getElementById('ui-ai-title').textContent = 'PayEase AI Financial Assistant';
+        document.getElementById('ui-ai-desc').textContent = 'Electricity bill (₹1,420) due in 2 days. Dining spend is 14% below budget!';
+        document.getElementById('ui-sec-people').textContent = 'Quick Send & Split Bill';
+        document.getElementById('ui-sec-bills').textContent = 'Recharge & Utility Bills (BBPS)';
+        document.getElementById('ui-bill-elec').textContent = 'Electricity';
+        document.getElementById('ui-bill-mob').textContent = 'Mobile';
+        document.getElementById('ui-bill-gas').textContent = 'LPG Gas';
+        document.getElementById('ui-bill-dth').textContent = 'DTH / TV';
+      }
+    }
+
+    function toggleLangQuick() {
+      setLanguage(currentLang === 'en' ? 'hi' : 'en');
+    }
+
+    function togglePhoneTheme(isDark) {
+      document.getElementById('iphone-frame').classList.toggle('dark-theme', isDark);
+      document.getElementById('theme-light').classList.toggle('active', !isDark);
+      document.getElementById('theme-dark').classList.toggle('active', isDark);
+    }
+
+    function openSendTo(name, upi, presetAmt) {
+      clearPayError();
+      const initials = (name || 'U').split(' ').filter(Boolean).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      document.getElementById('send-avatar').textContent = initials;
+      document.getElementById('send-name').textContent = name;
+      document.getElementById('send-upi').textContent = upi + ' • Verified Name ✓';
+
+      const amtInput = document.getElementById('pay-amount-input');
+      const noteInput = document.getElementById('pay-note-input');
+      if (typeof presetAmt === 'number' && presetAmt > 0) {
+        amtInput.value = presetAmt;
+        noteInput.value = `⚡ Payment to ${name}`;
+      } else {
+        amtInput.value = 500;
+        noteInput.value = `💸 Transfer to ${name}`;
+      }
+
+      const catTag = document.getElementById('ai-detected-category');
+      if (catTag) catTag.textContent = detectAiCategory(name + ' ' + noteInput.value);
+      updateSplitPreview();
+      switchScreen('send');
+    }
+
+    function setAmount(val) {
+      clearPayError();
+      document.getElementById('pay-amount-input').value = val;
+      updateSplitPreview();
+    }
+
+    function executePayment() {
+      if (paymentInFlight) return;
+      clearPayError();
+
+      const rawVal = document.getElementById('pay-amount-input').value.trim();
+      const amt = Number(rawVal);
+
+      // Edge Case 1: Empty, NaN, zero, or negative amounts
+      if (!rawVal || !Number.isFinite(amt) || amt <= 0) {
+        showPayError('⚠️ Please enter a valid amount greater than ₹0.');
+        return;
+      }
+
+      // Edge Case 2: Decimal precision (> 2 decimal places)
+      const roundedAmt = Math.round(amt * 100) / 100;
+      if (Math.abs(amt - roundedAmt) > 0.0001) {
+        showPayError('⚠️ Amount can have at most 2 decimal places (paise).');
+        return;
+      }
+
+      // Edge Case 3: NPCI UPI single transaction cap (₹1,00,000)
+      if (roundedAmt > 100000) {
+        showPayError('⚠️ NPCI UPI limit exceeded: Max ₹1,00,000 per transaction.');
+        return;
+      }
+
+      // Edge Case 4: Insufficient linked bank balance
+      if (roundedAmt > currentBalance) {
+        showPayError(`⚠️ Insufficient HDFC Bank balance (Available: ₹${currentBalance.toLocaleString('en-IN', {minimumFractionDigits: 2})}).`);
+        return;
+      }
+
+      paymentInFlight = true;
+      const recipient = document.getElementById('send-name').textContent || 'Verified Contact';
+      const rawNote = document.getElementById('pay-note-input').value.trim();
+      const safeNote = (rawNote || 'UPI Transfer').slice(0, 60);
+      const isSplit = document.getElementById('split-toggle') && document.getElementById('split-toggle').checked;
+      const aiCategory = detectAiCategory(recipient + ' ' + safeNote);
+
+      currentBalance = Math.max(0, Math.round((currentBalance - roundedAmt) * 100) / 100);
+      document.getElementById('ui-balance').textContent = '₹' + currentBalance.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+      document.getElementById('receipt-amt').textContent = '₹' + roundedAmt.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      document.getElementById('receipt-to').textContent = 'Paid to ' + recipient;
+      const splitSuffix = isSplit ? ` • Split: ₹${(Math.round((roundedAmt / 4) * 100) / 100).toLocaleString('en-IN')}/each requested` : '';
+      document.getElementById('receipt-ref').textContent = 'Ref: TXN' + Math.floor(10000000 + Math.random() * 90000000) + ' • ' + aiCategory + splitSuffix;
+
+      // Safe DOM creation (prevents XSS if user types <img onerror=...> in note)
+      const list = document.getElementById('home-txn-list');
+      const row = document.createElement('div');
+      row.className = 'txn-row';
+      row.innerHTML = `
+        <div class="txn-left">
+          <div class="txn-ico" style="background:rgba(79,70,229,0.14);">⚡</div>
+          <div>
+            <div class="txn-title">${escapeHtml(recipient)}</div>
+            <div class="txn-meta">Just now • ${escapeHtml(aiCategory)} • ${escapeHtml(safeNote)}</div>
+          </div>
+        </div>
+        <div class="txn-amt debit">-₹${roundedAmt.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+      `;
+      list.prepend(row);
+
+      document.getElementById('payment-modal').classList.add('open');
+      setTimeout(() => { paymentInFlight = false; }, 350);
+    }
+
+    function closeReceiptOnly() {
+      const modal = document.getElementById('payment-modal');
+      if (modal) modal.classList.remove('open');
+      paymentInFlight = false;
+    }
+
+    function closeReceipt() {
+      closeReceiptOnly();
+      switchScreen('home');
+    }
+
+    // Live listeners for amount and note inputs
+    document.getElementById('pay-amount-input').addEventListener('input', () => {
+      clearPayError();
+      updateSplitPreview();
+    });
+    document.getElementById('pay-note-input').addEventListener('input', (e) => {
+      const catTag = document.getElementById('ai-detected-category');
+      const rec = document.getElementById('send-name').textContent;
+      if (catTag) catTag.textContent = detectAiCategory(rec + ' ' + e.target.value);
+    });
+  </script>
+</body>
+</html>
